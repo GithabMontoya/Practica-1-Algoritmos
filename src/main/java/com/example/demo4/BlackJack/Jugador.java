@@ -1,5 +1,26 @@
 package com.example.demo4.BlackJack;
 
-public class Jugador {
+import com.example.demo4.DeckOfCards.CartaInglesa;
 
+public class Jugador {
+    private String nombre;
+    private Mano mano;
+
+    public Jugador(String nombre){
+        this.nombre = nombre;
+        this.mano = new Mano();
+    }
+
+    public String getNombre(){
+        return nombre;
+    }
+
+    public void recibirCarta(CartaInglesa carta){
+        carta.makeFaceUp();
+        mano.agregarCarta(carta);
+    }
+
+    public void nuevaMano(){
+        mano = new Mano();
+    }
 }
