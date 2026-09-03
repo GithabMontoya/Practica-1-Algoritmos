@@ -23,5 +23,35 @@ public class Mano {
         cartas.clear();
     }
 
+    public int calcularTotal(){
+        int total = 0;
+        int ases = 0;
 
+        for(CartaInglesa carta : cartas){
+            int valor = carta.getValor();
+            if (valor == 14){
+                total += 11;
+                ases++;
+            } else if(valor >= 11 && valor <= 13){
+                total += valor;
+            }
+        } while (total > 21 && ases > 0){
+            total -= 10;
+            ases--;
+        }
+        return total;
+    }
+
+    public boolean sePaso(){
+        return calcularTotal() > 21;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        for(CartaInglesa carta:cartas){
+            sb.append(carta.toString()).append(" ");
+        }
+        return sb.toString().trim();
+    }
 }
