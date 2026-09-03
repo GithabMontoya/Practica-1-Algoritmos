@@ -13,6 +13,10 @@ public class Jugador {
         return nombre;
     }
 
+    public Mano getMano(){
+        return mano;
+    }
+
     public void recibirCarta(CartaInglesa carta){
         carta.makeFaceUp();
         mano.agregarCarta(carta);
