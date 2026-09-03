@@ -1,25 +1,27 @@
 package com.example.demo4.BlackJack;
 
 import com.example.demo4.DeckOfCards.Carta;
+import com.example.demo4.DeckOfCards.CartaInglesa;
 import com.example.demo4.DeckOfCards.Mazo;
 
+import java.util.ArrayList;
+
 public class Mano {
+    private ArrayList<CartaInglesa> cartas = new ArrayList<>();
     private Carta carta;
     private Mazo mazo;
 
-    public Mano(){
-        for(int i = 1 ; i <= 2; i++){
-            recibirCarta();
-        }
+    public void agregarCarta(CartaInglesa carta){
+        cartas.add(carta);
     }
 
-    private void recibirCarta(){
-        mazo.obtenerUnaCarta();
+    public ArrayList<CartaInglesa> getCartas(){
+        return cartas;
     }
 
-    @Override
-    public String toString() {
-
-        return super.toString();
+    public void limpiar(){
+        cartas.clear();
     }
+
+
 }
