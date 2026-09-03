@@ -1,6 +1,4 @@
-package com.example.demo4.BlackJack;
-
-import com.example.demo4.DeckOfCards.CartaInglesa;
+package com.example.demo4.Modelo;
 
 public class Jugador {
     protected String nombre;

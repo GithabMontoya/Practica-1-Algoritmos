@@ -1,8 +1,4 @@
-package com.example.demo4.BlackJack;
-
-import com.example.demo4.DeckOfCards.Carta;
-import com.example.demo4.DeckOfCards.CartaInglesa;
-import com.example.demo4.DeckOfCards.Mazo;
+package com.example.demo4.Modelo;
 
 import java.util.ArrayList;
 

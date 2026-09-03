@@ -1,4 +1,4 @@
-package com.example.demo4.DeckOfCards;
+package com.example.demo4.Modelo;
 /**
  * Write a description of class Mazo here.
  *

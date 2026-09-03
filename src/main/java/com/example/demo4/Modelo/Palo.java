@@ -1,4 +1,4 @@
-package com.example.demo4.DeckOfCards;
+package com.example.demo4.Modelo;
 /**
  * Palos de cartas de una baraja inglesa.
  *
