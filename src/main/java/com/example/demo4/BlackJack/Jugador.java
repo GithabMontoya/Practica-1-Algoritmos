@@ -3,8 +3,8 @@ package com.example.demo4.BlackJack;
 import com.example.demo4.DeckOfCards.CartaInglesa;
 
 public class Jugador {
-    private String nombre;
-    private Mano mano;
+    protected String nombre;
+    protected Mano mano;
 
     public Jugador(String nombre){
         this.nombre = nombre;
