@@ -1,4 +1,5 @@
 module com.example.demo4 {
+    requires javafx.graphics;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
@@ -13,5 +14,6 @@ module com.example.demo4 {
     requires java.desktop;
 
     opens com.example.demo4 to javafx.fxml;
+    exports com.example.demo4.Controlador;
     exports com.example.demo4;
 }

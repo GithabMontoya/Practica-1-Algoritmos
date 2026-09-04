@@ -87,7 +87,7 @@ public class BlackjackControlador {
 
     private void turnoJugador(Jugador jugador){
         boolean pidiendo = true;
-        while(pidiendo && !jugador.getMano().sePaso()){
+        while(pidiendo && !jugador.getMano().sePaso() && !jugador.getMano().esBlackjack()){
             String opcion = vista.pedirOpcionesJugador(jugador.getNombre());
 
             if(opcion.equals("p")){
@@ -144,7 +144,9 @@ public class BlackjackControlador {
                 System.out.println(jugador.getNombre() + " ganó");
             } else if (totalJugadores < totalDealer) {
                 System.out.println(jugador.getNombre() + " perde contra el dealer.");
-            } else {
+            } else if (jugador.getMano().esBlackjack()) {
+                System.out.println(jugador.getNombre() + "Consiguió 21, ganó.");
+            }else {
                 System.out.println(jugador.getNombre() + " empató con el dealer");
             }
         }

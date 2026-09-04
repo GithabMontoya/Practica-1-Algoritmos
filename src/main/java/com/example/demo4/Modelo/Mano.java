@@ -44,6 +44,10 @@ public class Mano {
         return calcularTotal() > 21;
     }
 
+    public boolean esBlackjack(){
+        return calcularTotal() == 21;
+    }
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
