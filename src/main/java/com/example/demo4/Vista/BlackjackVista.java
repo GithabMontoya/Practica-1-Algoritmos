@@ -12,7 +12,7 @@ public class BlackjackVista {
     public int pedirCantidadJugadores(){
         System.out.println("Ingresa la cantidad de jugadores (1-4)");
         while (!scanner.hasNextInt()){
-            System.out.println("Solo se aceptan números");
+            System.out.println("Solo se aceptan números ");
             scanner.next();
         }
         int cantidad = scanner.nextInt();
@@ -44,7 +44,7 @@ public class BlackjackVista {
         System.out.println();
 
         for(Jugador jugador : jugadores){
-            System.out.println(jugador.getNombre() + ": " + ")");
+            System.out.println(jugador.getNombre() + ": " + jugador.getMano());
         }
     }
 }
