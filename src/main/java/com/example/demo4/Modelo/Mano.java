@@ -29,6 +29,8 @@ public class Mano {
                 total += 11;
                 ases++;
             } else if(valor >= 11 && valor <= 13){
+                total += 10;
+            } else {
                 total += valor;
             }
         } while (total > 21 && ases > 0){
