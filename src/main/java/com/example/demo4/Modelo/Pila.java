@@ -8,4 +8,9 @@ public class Pila <T>{
         dato = (T[]) new Object[10];
         tope = -1;
     }
+
+    public Pila(int tamano){
+        dato = (T[]) new Object[tamano];
+        tope = -1;
+    }
 }
