@@ -22,5 +22,12 @@ public class Pila <T>{
         return tope == -1;
     }
 
-
+    public void push(T dato){
+        if(llena()){
+            System.out.println("Desbordamiento");
+        } else {
+            tope++;
+            pila[tope] = dato;
+        }
+    }
 }
