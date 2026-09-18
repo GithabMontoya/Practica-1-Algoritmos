@@ -30,4 +30,17 @@ public class Pila <T>{
             pila[tope] = dato;
         }
     }
+
+    public T pop(){
+        T dato;
+        if(vacia()){
+            System.out.println("Subdesbordamiento");
+            return null;
+        } else {
+            dato = pila[tope];
+            pila[tope] = null;
+            tope --;
+            return dato;
+        }
+    }
 }
