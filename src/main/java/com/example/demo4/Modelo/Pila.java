@@ -43,4 +43,16 @@ public class Pila <T>{
             return dato;
         }
     }
+
+    public T peek(){
+        T dato;
+        if(vacia()){
+            System.out.println("Subdesbordamiento");
+            return null;
+        } else {
+            dato = pila[tope];
+            tope --;
+            return dato;
+        }
+    }
 }
