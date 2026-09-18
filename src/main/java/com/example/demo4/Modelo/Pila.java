@@ -17,4 +17,10 @@ public class Pila <T>{
     public boolean llena(){
         return tope == pila.length -1;
     }
+
+    public boolean vacia(){
+        return tope == -1;
+    }
+
+
 }
