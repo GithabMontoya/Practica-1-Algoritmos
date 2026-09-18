@@ -3,12 +3,14 @@ package com.example.demo4.Modelo;
 import java.util.ArrayList;
 
 public class Mano {
+    private Pila<CartaInglesa> cartasPila = new Pila<>();
     private ArrayList<CartaInglesa> cartas = new ArrayList<>();
     private Carta carta;
     private Mazo mazo;
 
     public void agregarCarta(CartaInglesa carta){
         cartas.add(carta);
+        cartasPila.push(Pila);
     }
 
     public ArrayList<CartaInglesa> getCartas(){

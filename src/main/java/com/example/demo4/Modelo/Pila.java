@@ -5,7 +5,7 @@ public class Pila <T>{
     private int tope;
 
     public Pila(){
-        pila = (T[]) new Object[10];
+        pila = (T[]) new Object[100];
         tope = -1;
     }
 
