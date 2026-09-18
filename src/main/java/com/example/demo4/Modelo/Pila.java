@@ -51,7 +51,6 @@ public class Pila <T>{
             return null;
         } else {
             dato = pila[tope];
-            tope --;
             return dato;
         }
     }
