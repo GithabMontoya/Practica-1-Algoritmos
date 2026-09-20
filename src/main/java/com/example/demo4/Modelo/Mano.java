@@ -3,29 +3,30 @@ package com.example.demo4.Modelo;
 import java.util.ArrayList;
 
 public class Mano {
-    private Pila<CartaInglesa> cartasPila = new Pila<>();
-    private ArrayList<CartaInglesa> cartas = new ArrayList<>();
-    private Carta carta;
-    private Mazo mazo;
+    private Pila<CartaInglesa> cartas = new Pila<>();
 
     public void agregarCarta(CartaInglesa carta){
-        cartas.add(carta);
-        cartasPila.push(Pila);
+        cartas.push(carta);
     }
 
     public ArrayList<CartaInglesa> getCartas(){
-        return cartas;
-    }
-
-    public void limpiar(){
-        cartas.clear();
+        ArrayList<CartaInglesa> resultado = new ArrayList<>();
+        Pila<CartaInglesa> pilaTemporal = new Pila<>();
+        while(!cartas.vacia()){
+            resultado.add(0, cartas.peek());
+            pilaTemporal.push(cartas.pop());
+        }
+        while (!pilaTemporal.vacia()){
+            cartas.push(pilaTemporal.pop());
+        }
+        return resultado;
     }
 
     public int calcularTotal(){
         int total = 0;
         int ases = 0;
 
-        for(CartaInglesa carta : cartas){
+        for(CartaInglesa carta : getCartas()){
             int valor = carta.getValor();
             if (valor == 14){
                 total += 11;
@@ -53,7 +54,7 @@ public class Mano {
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(CartaInglesa carta:cartas){
+        for(CartaInglesa carta:getCartas()){
             sb.append(carta.toString()).append(" ");
         }
         return sb.toString().trim();
