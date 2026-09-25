@@ -35,6 +35,15 @@ public class Mazo {
         return resultado;
     }
 
+    public void devolverCarta(CartaInglesa carta){
+        if(carta == null){
+            return;
+        } else {
+            cartas.push(carta);
+            mezclar();
+        }
+    }
+
     public CartaInglesa obtenerUnaCarta() {
         if (!cartas.vacia()) {
             return cartas.pop();
