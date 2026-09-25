@@ -26,7 +26,7 @@ public class BlackjackVista {
     }
 
     public String pedirOpcionesJugador(String nombreDelJugador){
-        System.out.println(nombreDelJugador + " Pedir carta (p) o plantarte (t)");
+        System.out.println(nombreDelJugador + ": ¿Pedir carta (p), plantarte (t) o deshacer la última carta repartida (d)?");
         return scanner.nextLine().trim().toLowerCase();
     }
 

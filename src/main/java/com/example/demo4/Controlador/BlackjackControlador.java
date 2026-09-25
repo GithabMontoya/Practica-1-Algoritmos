@@ -4,6 +4,7 @@ import com.example.demo4.Modelo.CartaInglesa;
 import com.example.demo4.Modelo.Dealer;
 import com.example.demo4.Modelo.Jugador;
 import com.example.demo4.Modelo.Mazo;
+import com.example.demo4.Modelo.Pila;
 import com.example.demo4.Vista.BlackjackVista;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class BlackjackControlador {
     private Mazo mazo;
     private List<Jugador> jugadores = new ArrayList<>();
     private Dealer dealer;
+
+    private Pila<Jugador> historialJugadas = new Pila<>();
 
     public void jugar(){
         System.out.println("Blackjack");
@@ -46,11 +49,13 @@ public class BlackjackControlador {
 
     private void jugarRonda(){
         mazo = new Mazo();
+        historialJugadas = new Pila<>();
         for(Jugador jugador : jugadores){
             jugador.nuevaMano();
         }
         dealer.nuevaMano();
 
+        // Reparto inicial: NO se agrega al historial, para que nunca se pueda deshacer.
         for(int vuelta = 0; vuelta < 2; vuelta++){
             for(Jugador jugador : jugadores){
                 jugador.recibirCarta(mazo.obtenerUnaCarta());
@@ -82,21 +87,33 @@ public class BlackjackControlador {
                 return false;
             }
         }
-       return true;
+        return true;
     }
 
     private void turnoJugador(Jugador jugador){
         boolean pidiendo = true;
-        while(pidiendo && !jugador.getMano().sePaso() && !jugador.getMano().esBlackjack()){
+        while(pidiendo && !jugador.getMano().esBlackjack()){
             String opcion = vista.pedirOpcionesJugador(jugador.getNombre());
 
             if(opcion.equals("p")){
-                jugador.recibirCarta(mazo.obtenerUnaCarta());
-                vista.mostrarMesa(jugadores, dealer, true);
+                if(jugador.getMano().sePaso()){
+                    System.out.println("Te pasaste de 21, no puedes pedir más cartas. Puedes deshacer (d) o plantarte (t).");
+                } else {
+                    jugador.recibirCarta(mazo.obtenerUnaCarta());
+                    historialJugadas.push(jugador);
+                    vista.mostrarMesa(jugadores, dealer, true);
+                    if(jugador.getMano().sePaso()){
+                        System.out.println(jugador.getNombre()
+                                + " se pasó de 21. Ya no puede pedir más cartas; puede deshacer (d) o plantarse (t).");
+                    }
+                }
             } else if (opcion.equals("t")){
                 pidiendo = false;
+            } else if (opcion.equals("d")){
+                deshacerUltimaJugada();
+                vista.mostrarMesa(jugadores, dealer, true);
             } else {
-                System.out.println("Opción invalida, selecciona (p) para jugar, o (t) para plantarse");
+                System.out.println("Opción invalida, selecciona (p) para pedir, (t) para plantarte, o (d) para deshacer");
             }
         }
 
@@ -113,6 +130,7 @@ public class BlackjackControlador {
         while(dealer.debePedirCarta()){
             System.out.println("El dealer pidió una carta");
             dealer.recibirCarta(mazo.obtenerUnaCarta());
+            historialJugadas.push(dealer);
             vista.mostrarMesa(jugadores, dealer, false);
         }
 
@@ -120,6 +138,21 @@ public class BlackjackControlador {
             System.out.println("El dealer se pasó de 21.");
         } else {
             System.out.println("El dealer se planta con " + dealer.getMano().calcularTotal() + "puntos.");
+        }
+    }
+
+    private void deshacerUltimaJugada(){
+        if(historialJugadas.vacia()){
+            System.out.println("No hay ninguna jugada para deshacer (solo quedan las cartas iniciales).");
+            return;
+        }
+
+        Jugador jugador = historialJugadas.pop();
+        CartaInglesa carta = jugador.getMano().devolverUltimaCarta();
+        if(carta != null){
+            mazo.devolverCarta(carta);
+            System.out.println(jugador.getNombre()
+                    + " devolvió su última carta al mazo, que fue vuelto a mezclar.");
         }
     }
 
