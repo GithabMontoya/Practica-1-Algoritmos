@@ -9,6 +9,10 @@ public class Mano {
         cartas.push(carta);
     }
 
+    public CartaInglesa devolverUltimaCarta(){
+        return cartas.pop();
+    }
+
     public ArrayList<CartaInglesa> getCartas(){
         ArrayList<CartaInglesa> resultado = new ArrayList<>();
         Pila<CartaInglesa> pilaTemporal = new Pila<>();
@@ -53,10 +57,6 @@ public class Mano {
 
     @Override
     public String toString(){
-        StringBuilder sb = new StringBuilder();
-        for(CartaInglesa carta:getCartas()){
-            sb.append(carta.toString()).append(" ");
-        }
-        return sb.toString().trim();
+        return getCartas().toString();
     }
 }
