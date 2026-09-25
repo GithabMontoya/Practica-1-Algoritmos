@@ -5,11 +5,13 @@ package com.example.demo4.Modelo;
  * @author (Cecilia Curlango Rosas)
  * @version (2025-2)
  */
+import com.fasterxml.jackson.databind.type.PlaceholderForType;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class Mazo {
-    private ArrayList<CartaInglesa> cartas = new ArrayList<>();
+    private Pila<CartaInglesa> cartas = new Pila<>();
 
     public Mazo() {
         llenar(); // crea todas las cartas, excluyendo Jokers
@@ -18,18 +20,28 @@ public class Mazo {
 
     /**
      * Obtiene todas las cartas del mazo.
-     * @return
      */
     public ArrayList<CartaInglesa> getCartas() {
-        return cartas;
+        ArrayList<CartaInglesa> resultado = new ArrayList<>();
+        Pila<CartaInglesa> temporal = new Pila<>();
+
+        while (!cartas.vacia()){
+            CartaInglesa carta = cartas.pop();
+            resultado.add(carta);
+            temporal.push(carta);
+        } while (!temporal.vacia()){
+            cartas.push(temporal.pop());
+        }
+        return resultado;
     }
 
     public CartaInglesa obtenerUnaCarta() {
-        if (cartas.size() > 0) {
-            return cartas.remove(0);
+        if (!cartas.vacia()) {
+            return cartas.pop();
         }
         return null;
     }
+
     private void mezclar() {
         Collections.shuffle(cartas);
     }

@@ -12,6 +12,7 @@ module com.example.demo4 {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires com.fasterxml.jackson.databind;
 
     opens com.example.demo4 to javafx.fxml;
     exports com.example.demo4.Controlador;
