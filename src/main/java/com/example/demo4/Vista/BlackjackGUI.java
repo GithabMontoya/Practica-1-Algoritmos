@@ -33,7 +33,7 @@ import java.util.function.Consumer;
 
 public class BlackjackGUI {
 
-    // ---------- Carga de imágenes ----------
+    //  Carga de imágenes
 
     private static final String CARPETA_IMAGENES = "/cartas poker/";
     private static final String RUTA_REVERSO = CARPETA_IMAGENES + "cartaAtras.jpg";
@@ -60,7 +60,7 @@ public class BlackjackGUI {
         return CACHE_IMAGENES.computeIfAbsent(RUTA_REVERSO,
                 r -> new Image(BlackjackGUI.class.getResourceAsStream(r)));
     }
-    
+
     private final List<TextField> camposNombres = new ArrayList<>();
     private final VBox contenedorCampos = new VBox(8);
 
@@ -121,6 +121,7 @@ public class BlackjackGUI {
     private Label labelMensaje;
     private Button botonPedir;
     private Button botonPlantarse;
+    private Button botonDeshacer;
 
     private List<Jugador> ultimosJugadores;
     private Dealer ultimoDealer;
@@ -128,7 +129,7 @@ public class BlackjackGUI {
     private int ultimoIndiceTurno;
     private int ultimasCartasRestantes = -1;
 
-    public Scene crearPantallaMesa(Runnable alPedirCarta, Runnable alPlantarse, Runnable alPausa) {
+    public Scene crearPantallaMesa(Runnable alPedirCarta, Runnable alPlantarse, Runnable alDeshacer, Runnable alPausa) {
         BorderPane raiz = new BorderPane();
         raiz.setPadding(new Insets(20));
         raiz.setStyle("-fx-background-color: #2e7d32;");
@@ -156,10 +157,13 @@ public class BlackjackGUI {
         botonPlantarse = new Button("Plantarse");
         botonPlantarse.setOnAction(e -> alPlantarse.run());
 
+        botonDeshacer = new Button("Deshacer");
+        botonDeshacer.setOnAction(e -> alDeshacer.run());
+
         Button botonPausa = new Button("Pausa");
         botonPausa.setOnAction(e -> alPausa.run());
 
-        HBox botones = new HBox(12, botonPedir, botonPlantarse, botonPausa);
+        HBox botones = new HBox(12, botonPedir, botonPlantarse, botonDeshacer, botonPausa);
         botones.setAlignment(Pos.CENTER);
 
         labelMensaje = new Label();
@@ -261,6 +265,11 @@ public class BlackjackGUI {
     public void habilitarBotonesDeTurno(boolean habilitados) {
         botonPedir.setDisable(!habilitados);
         botonPlantarse.setDisable(!habilitados);
+        botonDeshacer.setDisable(!habilitados);
+    }
+
+    public void habilitarBotonPedir(boolean habilitado) {
+        botonPedir.setDisable(!habilitado);
     }
 
     private ButtonType mostrarDialogo(Alert.AlertType tipo, String titulo, String encabezado,

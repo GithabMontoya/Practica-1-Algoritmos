@@ -4,6 +4,7 @@ import com.example.demo4.Modelo.CartaInglesa;
 import com.example.demo4.Modelo.Dealer;
 import com.example.demo4.Modelo.Jugador;
 import com.example.demo4.Modelo.Mazo;
+import com.example.demo4.Modelo.Pila;
 import com.example.demo4.Vista.BlackjackGUI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -23,6 +24,10 @@ public class BlackjackControladorGUI extends Application {
     private final List<Jugador> jugadores = new ArrayList<>();
     private Dealer dealer;
     private int indiceJugadorActual;
+
+    private Pila<Jugador> historialJugadas = new Pila<>();
+
+    private boolean ultimoMostrarTotalDealer;
 
     @Override
     public void start(Stage stage) {
@@ -48,6 +53,7 @@ public class BlackjackControladorGUI extends Application {
         stage.setScene(vista.crearPantallaMesa(
                 this::jugadorPideCarta,
                 this::jugadorSePlanta,
+                this::deshacerUltimaJugada,
                 this::mostrarPausa));
 
         nuevaRonda();
@@ -55,11 +61,13 @@ public class BlackjackControladorGUI extends Application {
 
     private void nuevaRonda() {
         mazo = new Mazo();
+        historialJugadas = new Pila<>();
         for (Jugador jugador : jugadores) {
             jugador.nuevaMano();
         }
         dealer.nuevaMano();
 
+        // Reparto inicial: NO se agrega al historial, para que nunca se pueda deshacer.
         for (int vuelta = 0; vuelta < 2; vuelta++) {
             for (Jugador jugador : jugadores) {
                 jugador.recibirCarta(mazo.obtenerUnaCarta());
@@ -75,14 +83,15 @@ public class BlackjackControladorGUI extends Application {
     private void jugadorPideCarta() {
         Jugador jugador = jugadores.get(indiceJugadorActual);
         jugador.recibirCarta(mazo.obtenerUnaCarta());
+        historialJugadas.push(jugador);
         redibujar(false);
 
         int total = jugador.getMano().calcularTotal();
 
         if (jugador.getMano().sePaso()) {
-            vista.mostrarMensaje(jugador.getNombre() + " se pasó de 21.");
-            indiceJugadorActual++;
-            avanzarTurno();
+            vista.mostrarMensaje(jugador.getNombre()
+                    + " se pasó de 21. Ya no puede pedir más cartas, pero puede deshacer o plantarse.");
+            vista.habilitarBotonPedir(false);
         } else if (total == TOTAL_PARA_PLANTARSE_AUTOMATICO) {
             vista.mostrarMensaje(jugador.getNombre() + " llegó a 21, se planta automáticamente.");
             indiceJugadorActual++;
@@ -93,6 +102,29 @@ public class BlackjackControladorGUI extends Application {
     private void jugadorSePlanta() {
         indiceJugadorActual++;
         avanzarTurno();
+    }
+
+    private void deshacerUltimaJugada() {
+        if (historialJugadas.vacia()) {
+            vista.mostrarMensaje("No hay ninguna jugada para deshacer (solo quedan las cartas iniciales).");
+            return;
+        }
+
+        Jugador jugador = historialJugadas.pop();
+        CartaInglesa carta = jugador.getMano().devolverUltimaCarta();
+        if (carta != null) {
+            mazo.devolverCarta(carta);
+            vista.mostrarMensaje(jugador.getNombre()
+                    + " devolvió su última carta al mazo, que fue vuelto a mezclar.");
+        }
+
+        redibujar(ultimoMostrarTotalDealer);
+
+        boolean esElJugadorEnTurno = indiceJugadorActual < jugadores.size()
+                && jugadores.get(indiceJugadorActual) == jugador;
+        if (esElJugadorEnTurno && !jugador.getMano().sePaso()) {
+            vista.habilitarBotonPedir(true);
+        }
     }
 
     private void avanzarTurno() {
@@ -128,6 +160,7 @@ public class BlackjackControladorGUI extends Application {
 
         while (dealer.debePedirCarta()) {
             dealer.recibirCarta(mazo.obtenerUnaCarta());
+            historialJugadas.push(dealer);
         }
         redibujar(true);
 
@@ -183,6 +216,7 @@ public class BlackjackControladorGUI extends Application {
         dealer = null;
         mazo = null;
         indiceJugadorActual = 0;
+        historialJugadas = new Pila<>();
         stage.setScene(vista.crearPantallaInicio(this::comenzarJuego));
     }
 
@@ -191,6 +225,7 @@ public class BlackjackControladorGUI extends Application {
     }
 
     private void redibujar(boolean mostrarTotalDealer) {
+        this.ultimoMostrarTotalDealer = mostrarTotalDealer;
         int indiceTurno = (indiceJugadorActual < jugadores.size()) ? indiceJugadorActual : -1;
         vista.actualizarMesa(jugadores, dealer, mostrarTotalDealer, indiceTurno, mazo.getCartas().size());
     }
