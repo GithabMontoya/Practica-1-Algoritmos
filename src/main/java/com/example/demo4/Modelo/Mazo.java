@@ -43,7 +43,14 @@ public class Mazo {
     }
 
     private void mezclar() {
-        Collections.shuffle(cartas);
+        ArrayList<CartaInglesa> temp = new ArrayList<>();
+        while (!cartas.vacia()){
+            temp.add(cartas.pop());
+        }
+        Collections.shuffle(temp);
+        for (CartaInglesa c : temp){
+            cartas.push(c);
+        }
     }
 
     private void llenar() {
