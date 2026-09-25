@@ -57,13 +57,9 @@ public class Mazo {
         for (int i = 2; i <=14 ; i++) {
             for (Palo palo : Palo.values()) {
                 CartaInglesa c = new CartaInglesa(i,palo, palo.getColor());
-                cartas.add(c);
+                cartas.push(c);
             }
         }
-    }
-
-    public void ordenar() {
-        Collections.sort(cartas);
     }
 
     @Override
